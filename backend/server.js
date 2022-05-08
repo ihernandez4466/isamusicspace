@@ -1,7 +1,8 @@
-//  require('dotenv').config();
+require('dotenv').config();
 const express = require('express'); //Line 1
 const app = express(); //Line 2
 const axios = require('axios');
+const { stringify } = require('querystring');
 const port = process.env.PORT || 8000; //Line 3
 
 // This displays message that the server running and listening to specified port
@@ -23,11 +24,6 @@ app.get('/express_backend', (req, res) => { //Line 9
 const request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
-//  var cookieParser = require('cookie-parser');
- 
-var client_id = 'f09a212db7f24e27b3d9a0a04e16708b'; // Your client id
-var client_secret = '578a422142e74c16aae6bb2c62321b6f'; // Your secret
-var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
  
  /**
   * Generates a random string containing numbers and letters
@@ -51,12 +47,16 @@ var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
 
-  const scope = 'user-read-private user-read-email';
+  const scope = [
+    'user-read-private',
+    'user-read-email',
+    'user-top-read',
+  ].join(' ');
 
-  const queryParams = querystring.stringify({
-    client_id: CLIENT_ID,
+  const queryParams = stringify({
+    client_id: process.env.CLIENT_ID,
     response_type: 'code',
-    redirect_uri: REDIRECT_URI,
+    redirect_uri: process.env.REDIRECT_URL,
     state: state,
     scope: scope,
   });
@@ -70,33 +70,30 @@ var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
   axios({
     method: 'post',
     url: 'https://accounts.spotify.com/api/token',
-    data: querystring.stringify({
+    data: stringify({
       grant_type: 'authorization_code',
       code: code,
-      redirect_uri: redirect_uri
+      redirect_uri: process.env.REDIRECT_URL
     }),
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${new Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`,
+      Authorization: `Basic ${new Buffer.from(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`).toString('base64')}`,
     },
   })
     .then(response => {
       if (response.status === 200) {
-        //  res.send(`<pre>${JSON.stringify(response.data, null, 2)}</pre>`);
-        const { access_token, token_type } = response.data;
-        axios.get('https://api.spotify.com/v1/me', {
-          headers: {
-          Authorization: `${token_type} ${access_token}`
-          }
+        const { access_token, refresh_token, expires_in } = response.data;
+
+        const queryParams = stringify({
+          access_token,
+          refresh_token,
+          expires_in,
         })
-        .then(response => {
-          res.send(`<pre>${JSON.stringify(response.data, null, 2)}</pre>`);
-        })
-        .catch(error => {
-          res.send(error);
-        });
+        //redirect to react app
+        res.redirect(`${process.env.UI_HOST}/?${queryParams}`);
+
       } else {
-        res.send(response);
+        res.redirect(`/?${stringify({ error: 'invalid_token' })}`);
       }
     })
     .catch(error => {
@@ -104,14 +101,13 @@ var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
     });
 });
 
- 
  app.get('/refresh_token', function(req, res) {
  
    // requesting access token from refresh token
    var refresh_token = req.query.refresh_token;
    var authOptions = {
      url: 'https://accounts.spotify.com/api/token',
-     headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+     headers: { 'Authorization': 'Basic ' + (new Buffer(process.env.CLIENT_ID + ':' + process.env.CLIENT_SECRET).toString('base64')) },
      form: {
        grant_type: 'refresh_token',
        refresh_token: refresh_token
