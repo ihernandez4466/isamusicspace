@@ -1,38 +1,25 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { mytheme } from './theme';
-import { Grommet, Box,Header, Button, Text, Tabs, Tab, dark } from 'grommet';
+import { Grommet, Box,Header, Button, Tabs, Tab, Text } from 'grommet';
 import { Home, Moon, Sun } from 'grommet-icons';
-import Analytics from './Analytics';
-import CompareProviders from './CompareProviders';
-//  import $ from 'jquery';
+import { access_token, logout } from './Spotify';
+import AnalyticsGrid from './AnalyticsGrid';
+import Loading from './Loading';
+import Profile from './Profile';
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
-  const [currentUser, setCurrentUser] = useState();
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [ token, setToken ] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const access_token = urlParams.get('access_token');
-    const refresh_token = urlParams.get('refresh_token');
-    console.log(access_token);
-    console.log(refresh_token);
-  }, [])
-  const login = async () => {
-    setIsLoading(true);
-    fetch('http://localhost:8000/login')
-      .then(response => response.json())
-      .then(data => console.log(data));
   
-    if (response.status !== 200) {
-      throw Error(body.message) 
-    }
-    setLoggedIn(true);
-    setCurrentUser(body);
-  }
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setToken(access_token);
+      setIsLoading(false);
+    }, 1000);
+  }, [token]);
   return (
     <Grommet
         full
@@ -45,7 +32,9 @@ const App = () => {
         <Header background='brand'>
           <Button primary margin="xsmall" icon={<Home />} />
           <Box direction="row" gap="xsmall" pad="xsmall">
-          <Button label={loggedIn ? 'login' : 'logout'} onClick={() => login()}/>
+          {token ? ( <Button label='logout' onClick={() => logout()}/> ) : 
+            (<a href="http://localhost:8000/login"><Button label={token ? 'logout' : 'login'}/></a> 
+          )}
             <Button
               secondary
               background="green"
@@ -55,16 +44,16 @@ const App = () => {
             />
           </Box>
         </Header>
-        <Box height="100%" background='background-contrast' margin="medium">
-          <Tabs>
-            <Tab title="Analytics" alignControls="stretch">
-              <Analytics />
-            </Tab>
-            <Tab title="Compare">
-              <CompareProviders />
-            </Tab>
-          </Tabs>
+        <Profile />
+        {isLoading ? ( <Loading /> ) : (
+        <Box height="100%" round background='background-contrast' margin="medium">
+          {!token ? (
+            <Text alignSelf='center'>You are not logged in</Text>
+          ): (
+            <AnalyticsGrid  />
+            )}
         </Box>
+        )}
       </Box>
     </Grommet>
   );

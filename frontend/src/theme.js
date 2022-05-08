@@ -125,4 +125,21 @@ export const mytheme = deepMerge(grommet, {
             },
         }
     },
+    tab: {
+        active: {
+            background: 'background',
+            color: 'accent-1',
+        },
+        background: 'dark-3',
+        border: undefined,
+        color: 'white',
+        hover: {
+            background: 'background',
+        },
+        margin: undefined,
+        pad: {
+            bottom: undefined,
+            horizontal: 'small',
+        },
+    }
 });
