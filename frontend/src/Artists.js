@@ -1,5 +1,6 @@
 import React from 'react';
-import { Avatar, Box, Text, Tab, Tabs, Header } from "grommet";
+import { Box, Tab, Tabs, Header } from "grommet";
+import DataList from './DataList'
 //  still need to do 
 //  spacing
 //  border and scrolling ability
@@ -8,9 +9,7 @@ const Artists = ({ longTermArtists }) => {
     function parseSpotifyResponse(artists) {
         const resultArtists = artists.map((artist) => {
             const newObject = {
-                followers: artist.followers.total,
-                //  genres: artist.genres,
-                image: artist.images[0],
+                image: artist.images[0].url,
                 name: artist.name,
                 popularity: artist.popularity,
             };
@@ -23,7 +22,7 @@ const Artists = ({ longTermArtists }) => {
     const top = artists.slice(0, 10);
     const bottom = artists.slice(length-10, length);
 
-    const List = (artists) => {
+    /*const List = (artists) => {
         return (
             <Box fill pad="small" overflow={{ horizontal: 'hidden', vertical: 'scroll' }}>
                 {artists.map((artist) => (
@@ -36,17 +35,17 @@ const Artists = ({ longTermArtists }) => {
                 }
             </Box>
         );
-    }
+    }*/
 
     return (
         <Box align='center' round direction="column">
         <Header round background='accent-1'>Artists</Header>
             <Tabs>
                <Tab title="Your Top Artists">
-                { top && List(top) }
+                { top && <DataList data={top} label="Artists"/> }
                </Tab>
                <Tab title="Artists you could appreciate more">
-                { bottom && List(bottom) }
+                { bottom && <DataList data={bottom} label="Artists"/> }
                </Tab>
            </Tabs>
         </Box>

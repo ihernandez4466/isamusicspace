@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 //  import { parentGenres } from './parentGenres';
-import { Box, Meter } from "grommet";
+import { Box } from "grommet";
 import { Chart } from "react-google-charts";
+import Loading from './Loading';
 
 //  still need to:
 //  spacing
@@ -18,7 +19,7 @@ const Genres = ({ longTermArtist }) => {
 
         let resultGenres = parentGenres;
         let genreCount = 0;
-        artists.map((artist) => {
+        artists.forEach((artist) => {
           const genres = artist.genres;
           genreCount += genres.length;
 
@@ -63,7 +64,7 @@ const Genres = ({ longTermArtist }) => {
     }
     useEffect(() => {
         calculateGenres(longTermArtist);
-    }, []);
+    }, [longTermArtist]);
     function convert(){
         let newArray = []
         newArray.push(['Genre', 'Percent', { type: 'string', role: 'tooltip', 'p': {'html': true} }]);
@@ -89,16 +90,14 @@ const Genres = ({ longTermArtist }) => {
         pieHole: 0.6,
       };
     return (
-        <Box align="center" background="background-front" pad="small" margin="small">
-            {results &&
+        <Box align="center" background="background-front" >
+            {results ? 
                 <Chart
                     chartType="PieChart"
-                    //width="100%"
-                    //  height="400px"
-                    //  background="background-front"
                     data={convert()}
                     options={options}
-              />
+              /> : (
+                <Loading />)
             }
         </Box>
     );

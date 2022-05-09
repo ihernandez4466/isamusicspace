@@ -1,5 +1,7 @@
 import { deepMerge } from 'grommet/utils';
 import { grommet } from 'grommet';
+import { FormPreviousLink } from 'grommet-icons/icons/FormPreviousLink';
+import { FormNextLink } from 'grommet-icons/icons/FormNextLink';
 export const mytheme = deepMerge(grommet, {
     global: {
         colors: {
@@ -141,5 +143,26 @@ export const mytheme = deepMerge(grommet, {
             bottom: undefined,
             horizontal: 'small',
         },
+    },
+    pagination: {
+        button: {
+            color: 'text-strong',
+            border: {},
+            active: {
+                background: {
+                    color: 'salmon',
+                },
+                color: 'text',
+            },
+            hover: {
+                background: {
+                    color: 'blue'
+                }
+            }
+        },
+        icons: {
+            next: FormNextLink,
+            previous: FormPreviousLink,
+        }
     }
 });

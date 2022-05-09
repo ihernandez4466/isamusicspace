@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { mytheme } from './theme';
-import { Grommet, Box,Header, Button, Tabs, Tab, Text } from 'grommet';
+import { Grommet, Box,Header, Button, Text } from 'grommet';
 import { Home, Moon, Sun } from 'grommet-icons';
 import { access_token, logout } from './Spotify';
 import AnalyticsGrid from './AnalyticsGrid';
@@ -49,9 +49,7 @@ const App = () => {
         <Box height="100%" round background='background-contrast' margin="medium">
           {!token ? (
             <Text alignSelf='center'>You are not logged in</Text>
-          ): (
-            <AnalyticsGrid  />
-            )}
+          ): <AnalyticsGrid  />}
         </Box>
         )}
       </Box>
