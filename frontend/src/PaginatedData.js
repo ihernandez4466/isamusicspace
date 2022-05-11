@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Image, Box, Pagination, Text } from 'grommet';
+import { Image, Box, Footer, Pagination, Text } from 'grommet';
 
 const PaginatedGrid = (props) => {
-    const { data, label } = props;
-    const [currentData, setCurrentData] = useState(data.slice(0, 5));
+    const { data, label, isAlbum } = props;
+    //  console.log(`data is: ${data} and the length is: ${data.length}`);
+    const [currentData, setCurrentData] = useState(data.slice(0, 3));
+    //  const [indices, setIndices] = useState([0, data.length/3]);
 
     const handleChange = ({ startIndex, endIndex }) => {
         const nextData = data.slice(startIndex, endIndex);
@@ -11,22 +13,38 @@ const PaginatedGrid = (props) => {
     };
 
     return (
-        <Box align="center" direction='column'>
-            <Box direction='row'>
-                {currentData && currentData.map((element) => {
+        //  this box is done
+        <Box margin="small" align='center' fill>
+            <Box direction='row' pad="small" gap="small" fill>
+                {currentData.map((element) => {
                     return (
-                        <Box key={element.name} height="600px" width="600px">
-                            <Image
-                                //  fit="cover"
-                                src={element.image}
-                            />
-                            <Text>{label}</Text>
-                            <Text>{element.name}</Text>
+                        <Box key={element.name} direction='column'>
+                            <Box>
+                                <Image
+                                    fit="cover"
+                                    //  height="100px"
+                                    //  max-height="75%"
+                                    //  width="100px" 
+                                    //  max-width="33.33%"
+                                    src={element.image}
+                                />
+                            </Box>
+                            <Box>
+                                <Text weight="bold" style={{ textAlign:'center', fontSize: "small"}}>{element.name}</Text>
+                                <Text style={{ textAlign:'center', fontSize: "small"}}>{label ? label : element.artist }</Text>
+                            </Box>
                         </Box>
                     );
                 })}
             </Box>
-            <Pagination numberItems={data.length} onChange={handleChange} />
+            <Footer pad="xsmall">
+                <Pagination
+                    numberMiddlePages={1}
+                    step={3} 
+                    numberItems={data.length} 
+                    onChange={handleChange} 
+                />
+            </Footer>
         </Box>
         );
 };

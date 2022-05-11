@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Box, Grid, Text } from 'grommet';
 import Artists from './Artists';
 import NewArtists from './NewArtists';
+import Decade from './Decade';
 import { getTopArtists, getTopTracks} from './Spotify';
 import { catchErrors } from './utils';
 import Tracks from './Tracks';
@@ -11,6 +12,7 @@ import Genres from './Genres';
 import Albums from './Albums';
 
 const AnalyticsGrid = () => {
+    //  longTermArtists || shortTermArtists || shortTermTracks || longTermTracks
     const [ longTermArtists, setlongTermArtists ] = useState(null);
     const [ shortTermArtists, setshortTermArtists ] = useState(null);
     const [ shortTermTracks, setshortTermTracks ] = useState(null);
@@ -37,7 +39,7 @@ const AnalyticsGrid = () => {
         setshortTermTracks(data.items);
     };
     const NoData = (label) => {
-        console.log('NO DATA');
+        //  console.log('NO DATA');
         return (
             <Box pad="large">
                 <Text>{`NO DATA from ${label}`}</Text>
@@ -53,32 +55,69 @@ const AnalyticsGrid = () => {
         setIsLoading(false);
     }, []);
     return (
+        <>
+        {
+            (isLoading || !longTermArtists || !shortTermArtists || !shortTermTracks || !longTermTracks) ? < Loading /> : (
         <Grid
-        fill
-        rows={['flex', 'flex', 'flex']}
-        columns={['flex', 'flex']}
-        align="center"
-        areas={[
-            // [column, row] for coordinates
-            { name: 'albums', start: [0, 0], end: [0, 0] },
-            { name: 'newArtists', start: [1, 0], end: [1, 0] },
-            { name: 'songs', start: [2, 0], end: [2, 0] },
-            { name: 'genres', start: [0, 1], end: [0, 1] },
-            { name: 'artists', start: [1, 1], end: [1, 1] },
-            { name: 'decade', start: [2, 1], end: [2, 1] },
-        ]}
+            fill
+            pad="small"
+            gap="xsmall"
+            rows={['auto', 'auto', 'auto']}
+            columns={['auto', 'auto', 'auto']}
+            align="center"
+            areas={[
+                // [column, row] for coordinates
+                { name: 'genres', start: [0, 0], end: [0, 0] },
+                { name: 'newArtists', start: [1, 0], end: [1, 0] },
+                { name: 'songs', start: [2, 0], end: [2, 0] },
+                { name: 'artists', start: [0, 1], end: [0, 1] },
+                { name: 'albums', start: [1, 1], end: [1, 1] },
+                { name: 'decade', start: [2, 1], end: [2, 1] },
+            ]}
         >
-        {( isLoading || !longTermArtists || !shortTermArtists || !longTermTracks || !shortTermTracks) ? <Loading /> : (
-            <Box fill align='center'>
-                <Box round gridArea="albums" background="blue">{longTermArtists ? <Albums longTerm={longTermTracks} /> : NoData('albums') }</Box>
-                <Box round gridArea="newArtists" background="green">{(longTermArtists && shortTermArtists) ? <NewArtists longTerm={longTermArtists} shortTerm={shortTermArtists} />: NoData('newartists') }</Box>
-                <Box round gridArea="songs" background="red">{ shortTermTracks ? <Tracks topTracks={shortTermTracks}/> : NoData('songs')}</Box>
-                <Box round gridArea="genres" background="green">{ longTermArtists ? <Genres longTermArtist={longTermArtists} />: NoData('genres')}</Box>
-                <Box round gridArea="artists" background="red">{ longTermArtists ? <Artists longTermArtists={longTermArtists} /> : NoData('artists')}</Box>
-                <Box round gridArea="decade" background="background-front">{ longTermArtists ? <Genres longTermArtist={longTermArtists} />: NoData('decade')}</Box>
-            </Box>
-        )}
-        </Grid>
+            <Box gridArea="albums" 
+                round
+                fill
+                align="center"
+                //  pad="small"
+                background='background-contrast'
+                border={{ side: 'all', color: 'accent-3'}} 
+            >{longTermArtists ? <Albums longTerm={longTermTracks} /> : NoData('albums') }</Box>
+            <Box gridArea="newArtists" 
+                align="center"
+                round 
+                fill 
+                //  pad="small"
+                background='background-contrast'
+                border={{ side: 'all', color: 'accent-3'}} 
+            >{(longTermArtists && shortTermArtists) ? <NewArtists longTerm={longTermArtists} shortTerm={shortTermArtists} />: NoData('newartists') }</Box>
+            <Box gridArea="songs"
+                round 
+                fill
+                background='background-contrast'
+                border={{ side: 'all', color: 'accent-3'}} 
+            >{ shortTermTracks ? <Tracks topTracks={shortTermTracks}/> : NoData('songs')}</Box>
+            <Box gridArea="genres"
+                round 
+                fill 
+                background='background-contrast'
+                border={{ side: 'all', color: 'accent-3'}} 
+            >{ longTermArtists ? <Genres longTermArtist={longTermArtists} />: NoData('genres')}</Box>
+            <Box gridArea="artists"
+                round 
+                fill
+                background='background-contrast'
+                border={{ side: 'all', color: 'accent-3'}} 
+            >{ longTermArtists ? <Artists longTermArtists={longTermArtists} /> : NoData('artists')}</Box>
+            <Box gridArea="decade"
+                round 
+                fill
+                background='background-contrast'
+                border={{ side: 'all', color: 'accent-3'}} 
+            >{ longTermArtists ? <Decade longTerm={longTermTracks} />: NoData('decade')}</Box>
+        </Grid>)
+        }
+        </>
     );
 };
 

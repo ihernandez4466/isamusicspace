@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from "grommet";
-import PaginatedGrid from './PaginatedData';
-import Loading from './Loading';
+import GridPagination from './GridPagination';
 //  still need to do 
 //  spacing and ensure pictures appear
 
@@ -16,7 +14,12 @@ const NewArtists = (props) => {
         array1.forEach(element => {
             if (array2.filter(function(e) { return e.name === element.name; }).length === 0) {
                 /* long term contains the element we're looking for */
-                newArray.push(element);
+                const newObject = {
+                    name: element.name,
+                    image: element.images[0].url,
+                    popularity: element.popularity
+                }
+                newArray.push(newObject);
             }
         });
         setnewArtists(newArray);
@@ -25,13 +28,7 @@ const NewArtists = (props) => {
         calculateNewArtists(shortTerm, longTerm);
     }, [longTerm, shortTerm])
     return (
-        <Box align="center">
-            { newArtists ? (
-                <PaginatedGrid data={newArtists} label="Artist" />
-            ) : (
-                <Loading />
-            )}
-        </Box>
+        <GridPagination data={newArtists} title="Your Recent Artists" label="Artist"/>
     );
 };
 

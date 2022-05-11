@@ -1,8 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Box } from "grommet";
-import DataList from './DataList';
-import Loading from './Loading';
+import GridScroll from './GridScroll';
 
 const Tracks = ({ topTracks }) => {
     const [ Tracks, setTracks ] = useState(null);
@@ -17,17 +15,15 @@ const Tracks = ({ topTracks }) => {
             };
             return newObject;
         });
-        setTracks(resultTracks.slice(0,5));
+        const length = resultTracks.length;
+        setTracks(resultTracks.slice(0, length/2));
     }
 
     useEffect(() => {
         parseSpotifyResponse(topTracks);
     }, [topTracks]);
     return (
-        <Box direction='column' align="center">
-            { Tracks ? <DataList data={Tracks} label="Song" /> : (
-                <Loading />) }
-        </Box>
+        <GridScroll data={Tracks} title="Top Tracks" label="Song"/>
     );
 }
 

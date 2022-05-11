@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-//  import { parentGenres } from './parentGenres';
-import { Box } from "grommet";
 import { Chart } from "react-google-charts";
 import Loading from './Loading';
+import GridTitle from './GridTitle';
 
 //  still need to:
 //  spacing
@@ -75,7 +74,6 @@ const Genres = ({ longTermArtist }) => {
         return newArray;
     }
     const options = {
-        title: 'My Top Genres',
         colors: ['#7D1E23', '#7D4346', '#C9A9AB', '#C96D71', '#944872', '#DEE8EC', '#1e4950', '#3c9fcf'],
         tooltip: {isHtml: true},
         backgroundColor: 'transparent',
@@ -90,7 +88,8 @@ const Genres = ({ longTermArtist }) => {
         pieHole: 0.6,
       };
     return (
-        <Box align="center" background="background-front" >
+        <>
+            <GridTitle title="Top Genres" color="accent-1light"/>
             {results ? 
                 <Chart
                     chartType="PieChart"
@@ -99,7 +98,7 @@ const Genres = ({ longTermArtist }) => {
               /> : (
                 <Loading />)
             }
-        </Box>
+        </>
     );
 }
 export default Genres;

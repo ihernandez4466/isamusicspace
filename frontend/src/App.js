@@ -1,18 +1,19 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { mytheme } from './theme';
-import { Grommet, Box,Header, Button, Text } from 'grommet';
-import { Home, Moon, Sun } from 'grommet-icons';
+import { Tip, Grommet, Box,Header, Button, Image, Text } from 'grommet';
+import { Moon, Sun, Spotify } from 'grommet-icons';
 import { access_token, logout } from './Spotify';
 import AnalyticsGrid from './AnalyticsGrid';
 import Loading from './Loading';
 import Profile from './Profile';
+import play from './playgify.gif';
 
 const App = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [ token, setToken ] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  
+
   useEffect(() => {
     setIsLoading(true);
     setTimeout(() => {
@@ -30,11 +31,17 @@ const App = () => {
       >
       <Box direction="column" fill>
         <Header background='brand'>
-          <Button primary margin="xsmall" icon={<Home />} />
+          <Tip 
+          dropProps={{ align: { left: "right" } }}
+          content={
+            <Box background="accent-2" round pad="small" width={{ max: 'small' }}>
+              <Text color="text-strong">Go To Spotify</Text>
+            </Box>
+          }>
+            <a href="https://www.spotify.com/us/"><Button primary margin="xsmall" icon={<Spotify />} /></a>
+          </Tip>
           <Box direction="row" gap="xsmall" pad="xsmall">
-          {token ? ( <Button label='logout' onClick={() => logout()}/> ) : 
-            (<a href="http://localhost:8000/login"><Button label={token ? 'logout' : 'login'}/></a> 
-          )}
+          {token && <Button label='logout' onClick={() => logout()}/>}
             <Button
               secondary
               background="green"
@@ -48,7 +55,15 @@ const App = () => {
         {isLoading ? ( <Loading /> ) : (
         <Box height="100%" round background='background-contrast' margin="medium">
           {!token ? (
-            <Text alignSelf='center'>You are not logged in</Text>
+            <Box fill margin="small" align="center" justify="center" gap="xxsmall">
+              <h1>Welcome! </h1>
+              <Box direction='row' align="center" gap="small">
+                <Spotify size="large"/>
+                <h2>See my Spotify Analytics</h2>
+              </Box>
+              <a href="http://localhost:8000/login"><Button label='Login'/></a> 
+              <Image src={play}/>
+            </Box>
           ): <AnalyticsGrid  />}
         </Box>
         )}
