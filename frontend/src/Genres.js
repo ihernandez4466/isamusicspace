@@ -58,7 +58,6 @@ const Genres = ({ longTermArtist }) => {
           });
         });
         resultGenres.sort((a, b) => (a.count < b.count) ? 1 : -1);
-        //  console.log(resultGenres);
         setResults(resultGenres);
     }
     useEffect(() => {
@@ -68,7 +67,7 @@ const Genres = ({ longTermArtist }) => {
         let newArray = []
         newArray.push(['Genre', 'Percent', { type: 'string', role: 'tooltip', 'p': {'html': true} }]);
         results.forEach(x => {
-            const object = [ `${x.genre}`, x.percent*100, `Subgenres: ${x.subgenres}` ]
+            const object = [ `${x.genre}`, x.percent*100, `Subgenres: ${x.subgenres.slice(0,3)} ` ]
             newArray.push(object);
         });
         return newArray;
@@ -77,6 +76,7 @@ const Genres = ({ longTermArtist }) => {
         colors: ['#7D1E23', '#7D4346', '#C9A9AB', '#C96D71', '#944872', '#DEE8EC', '#1e4950', '#3c9fcf'],
         tooltip: {isHtml: true},
         backgroundColor: 'transparent',
+        legend: {textStyle: {color: 'white'}},
         chartArea: {
             // leave room for y-axis labels
             width: '94%'
@@ -89,7 +89,7 @@ const Genres = ({ longTermArtist }) => {
       };
     return (
         <>
-            <GridTitle title="Top Genres" color="accent-1light"/>
+            <GridTitle title="Top Genres" color="!brand-accent"/>
             {results ? 
                 <Chart
                     chartType="PieChart"

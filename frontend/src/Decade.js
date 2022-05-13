@@ -12,8 +12,8 @@ const Decade = ({ longTerm }) => {
     const [minBound, setminBound ] = useState(null);
     const [maxBound, setmaxBound ] = useState(null);
     const [maxCount, setmaxCount ] = useState(null);
+    const [ xaxis, setxAxis ] = useState(['2007, 2015, 2022']);
     const years = [];
-    const xaxis = [];
 
     function checkYearsArray(array, year) {
         const index = array.findIndex(element => element.year === year);
@@ -55,20 +55,23 @@ const Decade = ({ longTerm }) => {
         setmaxBound(parseInt(years[years.length-1].year));
 
         const numOfIter = Math.round((maxBound-minBound)/10);
+        let temp = [];
         let start = minBound;
-        xaxis.push(start);
+        temp.push(start);
         for (let i = 0; i < numOfIter; i++) {
             start = start + 10;
-            xaxis.push(start);
+            temp.push(start);
         }
-        xaxis.push(maxBound);
+        temp.push(maxBound);
+        //  console.log(temp);
+        setxAxis(temp);
         //  console.log(xaxis);
     }
     function convert(){
         let newArray = [];
         let i = 1;
         results.forEach((element) => {
-            if(i > 4){
+            if(i > 5){
                 i = 1;
             }
             const yearInt = parseInt(element.year);
@@ -76,7 +79,7 @@ const Decade = ({ longTerm }) => {
             const value = [yearInt, element.count];
             const object = {
                 value: value,
-                color: `accent-${i}`,
+                color: `neutral-${i}`,
                 label: element.year,
             };
             newArray.push(object);
@@ -90,14 +93,16 @@ const Decade = ({ longTerm }) => {
 
     return (
         <>
-            <GridTitle title="Decade you live in" color="accent-1light"/>
-            { results ? 
-                <Box gap="small">
+            <GridTitle title="Decade you live in" color="!brand-accent"/>
+            { (results && xaxis) ? 
+                <Box pad="small"gap="xsmall">
+                    <Box border={{ side: 'bottom' }}>
                     <Chart
                         bounds={[[minBound, maxBound], [0, maxCount]]}
                         values = {convert()}
                     />
-                    <Box direction='row'>
+                    </Box>
+                    <Box direction='row' justify='between'>
                         {xaxis.map((element) => {
                             console.log(element);
                             return (

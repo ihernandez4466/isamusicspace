@@ -60,11 +60,12 @@ const AnalyticsGrid = () => {
             (isLoading || !longTermArtists || !shortTermArtists || !shortTermTracks || !longTermTracks) ? < Loading /> : (
         <Grid
             fill
+            align="center"
             pad="small"
             gap="xsmall"
             rows={['auto', 'auto', 'auto']}
-            columns={['auto', 'auto', 'auto']}
-            align="center"
+            columns={['flex', 'flex', 'flex']}
+            //  align="center"
             areas={[
                 // [column, row] for coordinates
                 { name: 'genres', start: [0, 0], end: [0, 0] },
@@ -81,7 +82,7 @@ const AnalyticsGrid = () => {
                 align="center"
                 //  pad="small"
                 background='background-contrast'
-                border={{ side: 'all', color: 'accent-3'}} 
+                border={{ side: 'all', color: 'neutral-3'}} 
             >{longTermArtists ? <Albums longTerm={longTermTracks} /> : NoData('albums') }</Box>
             <Box gridArea="newArtists" 
                 align="center"
@@ -89,31 +90,31 @@ const AnalyticsGrid = () => {
                 fill 
                 //  pad="small"
                 background='background-contrast'
-                border={{ side: 'all', color: 'accent-3'}} 
+                border={{ side: 'all', color: 'neutral-3'}} 
             >{(longTermArtists && shortTermArtists) ? <NewArtists longTerm={longTermArtists} shortTerm={shortTermArtists} />: NoData('newartists') }</Box>
             <Box gridArea="songs"
                 round 
                 fill
                 background='background-contrast'
-                border={{ side: 'all', color: 'accent-3'}} 
+                border={{ side: 'all', color: 'neutral-3'}} 
             >{ shortTermTracks ? <Tracks topTracks={shortTermTracks}/> : NoData('songs')}</Box>
             <Box gridArea="genres"
                 round 
                 fill 
                 background='background-contrast'
-                border={{ side: 'all', color: 'accent-3'}} 
+                border={{ side: 'all', color: 'neutral-3'}} 
             >{ longTermArtists ? <Genres longTermArtist={longTermArtists} />: NoData('genres')}</Box>
             <Box gridArea="artists"
                 round 
                 fill
                 background='background-contrast'
-                border={{ side: 'all', color: 'accent-3'}} 
+                border={{ side: 'all', color: 'neutral-3'}} 
             >{ longTermArtists ? <Artists longTermArtists={longTermArtists} /> : NoData('artists')}</Box>
             <Box gridArea="decade"
                 round 
                 fill
                 background='background-contrast'
-                border={{ side: 'all', color: 'accent-3'}} 
+                border={{ side: 'all', color: 'neutral-3'}} 
             >{ longTermArtists ? <Decade longTerm={longTermTracks} />: NoData('decade')}</Box>
         </Grid>)
         }

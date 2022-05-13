@@ -1,5 +1,5 @@
 import React from "react"
-import { Box } from "grommet";
+import { Box, Text } from "grommet";
 import GridTitle from "./GridTitle";
 import DataList from "./DataList";
 import Loading from "./Loading";
@@ -8,10 +8,14 @@ const GridScroll = ({ data, title, label }) => {
     return (
         <>
             <GridTitle title={title} 
-                color="accent-1light"
+                color="!brand-accent"
             />
             { data ? (
-                <DataList data={data} label={label}/>
+                <>
+                {data.length !== 0 ?
+                    <DataList data={data} label={label}/> : <Box align="center"><Text>You have no data :(</Text></Box>
+                }
+                </>
             ) : (
                 <Loading />
             )}

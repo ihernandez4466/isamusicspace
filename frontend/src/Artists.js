@@ -7,6 +7,7 @@ const Artists = ({ longTermArtists }) => {
     function parseSpotifyResponse(artists) {
         const resultArtists = artists.map((artist) => {
             const newObject = {
+                //  image: "https://i.scdn.co/image/84282c28d851a700132356381fcfbadc67ff498b",
                 image: artist.images[0].url,
                 name: artist.name,
                 popularity: artist.popularity,

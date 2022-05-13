@@ -13,7 +13,7 @@ export const mytheme = deepMerge(grommet, {
                 light: '#fcebeb',
                 dark: '#fbcfcf'
             },
-            '!brand-accent' : '#fbcfcf',
+            '!brand-accent' : '#fcebeb',
             'accent-1': '#FD898E',
             'accent-1light': '#DEE8EC',
             'accent-2': '#7D1E23',
@@ -23,7 +23,8 @@ export const mytheme = deepMerge(grommet, {
             'neutral-1': '#7D4346',
             'neutral-2': '#7D1E23',
             'neutral-3': '#C96D71',
-            'neutral-4': '#C9A9AB',
+            'neutral-4': '#CAB5B7',
+            //  'neutral-4': '#C9A9AB',
             background: {
                 dark: '#121212',
                 light: '#FFFFFF',
@@ -147,14 +148,13 @@ export const mytheme = deepMerge(grommet, {
             border: {},
             active: {
                 background: {
-                    color: 'salmon',
+                    color: "accent-2",
                 },
-                color: 'text',
+                color: '#FFFFFF',
             },
             hover: {
-                background: {
-                    color: 'blue'
-                }
+                background: { color: "brand-accent" },
+                color: "black",
             }
         },
         icons: {

@@ -7,6 +7,7 @@ const Tracks = ({ topTracks }) => {
 
     function parseSpotifyResponse(tracks) {
         const resultTracks = tracks.map((track) => {
+            //  const default = "https://i.scdn.co/image/84282c28d851a700132356381fcfbadc67ff498b"
             const newObject = {
                 image: track.album.images[0].url,
                 //  release_date: track.album.release_date,
