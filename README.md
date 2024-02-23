@@ -23,6 +23,7 @@ Chart.js for Data Visualization
 CLIENT_ID=<Your client id>
 CLIENT_SECRET=<Your secret>
 REDIRECT_URI=http://localhost:3000 // Your redirect uri if running locally
-PORT=8000 // or whatever port you want to run your app on
+UI_HOST=http://localhost:3000
+PORT=8000 // or whatever port you want to run your backend
 ```
 3. Run `npm start`
